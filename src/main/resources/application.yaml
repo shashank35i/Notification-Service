@@ -5,3 +5,22 @@ server:
 spring:
   application:
     name: notification-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/notification_db?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
+    username: localhost
+    password: Shashank@3549
+  jpa:
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notifications-service
+      auto-offset-reset: latest
+      key-deserializer:  org.apache.kafka.common.serialization.StringSerializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+
+
+
+
+
