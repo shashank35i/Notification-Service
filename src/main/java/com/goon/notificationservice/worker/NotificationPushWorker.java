@@ -1,6 +1,9 @@
 package com.goon.notificationservice.worker;
 
 
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.goon.notificationservice.dto.DriverAssignedPayload;
+import com.goon.notificationservice.dto.RideOfferedPayload;
 import com.goon.notificationservice.entity.ProcessedEvent;
 import com.goon.notificationservice.repository.ProcessedEventRepository;
 import com.goon.notificationservice.service.*;
@@ -60,7 +63,7 @@ public class NotificationPushWorker {
     public void consumeDriverAssigned(
             String message,
             @Header("eventId") String eventId,
-            Acknowledgment ack) {
+            Acknowledgment ack) throws FirebaseMessagingException {
 
         UUID id = UUID.fromString(eventId);
 
