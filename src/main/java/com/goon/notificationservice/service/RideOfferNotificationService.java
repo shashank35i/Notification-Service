@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Service
 @RequiredArgsConstructor
 public class RideOfferNotificationService {
@@ -28,8 +30,8 @@ public class RideOfferNotificationService {
         String payload = JsonMapper.shared().writeValueAsString(event);
 
         redisTemplate.execute((RedisCallback<Object>) connection -> {
-            byte[] channelBytes = channel.getBytes(StandardCharsets.UTF_8);
-            byte[] payloadBytes = payload.getBytes(StandardCharsets.UTF_8);
+            byte[] channelBytes = channel.getBytes(UTF_8);
+            byte[] payloadBytes = payload.getBytes(UTF_8);
 
             return connection.execute("SPUBLISH", channelBytes, payloadBytes);
         });
