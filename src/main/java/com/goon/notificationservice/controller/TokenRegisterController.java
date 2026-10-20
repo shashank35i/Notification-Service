@@ -21,5 +21,9 @@ public class TokenRegisterController {
             @RequestBody String fcmToken
             ){
 
+        tokenRegisterService.registerToken(userId,fcmToken);
+
+        return ResponseEntity.noContent()
+                .build();
     }
 }
