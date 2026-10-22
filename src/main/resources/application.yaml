@@ -5,6 +5,12 @@ server:
 spring:
   application:
     name: notification-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${GOON_KEYCLOAK_ISSUER}
+          audiences: notification-service
   datasource:
     url: jdbc:mysql://localhost:3306/notification_db?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
     username: root
