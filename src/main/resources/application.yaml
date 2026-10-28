@@ -17,6 +17,12 @@ spring:
       hibernate.jdbc.time_zone: UTC
 
   kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
     bootstrap-servers: localhost:9092
     consumer:
       group-id: notifications-service
