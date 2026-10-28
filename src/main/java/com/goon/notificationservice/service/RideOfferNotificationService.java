@@ -1,24 +1,20 @@
 package com.goon.notificationservice.service;
 
 import com.goon.notificationservice.dto.RideOfferedPayload;
+import io.lettuce.core.api.StatefulRedisConnection;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.json.JsonMapper;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 @RequiredArgsConstructor
 public class RideOfferNotificationService {
 
     private final FCMPushService fcmPushService;
-    private final StringRedisTemplate redisTemplate;
+    private final StatefulRedisConnection<String, String> connection;
 
     public void handleRideOffered(RideOfferedPayload event) {
 
@@ -29,12 +25,7 @@ public class RideOfferNotificationService {
         String channel = "driver:" + event.driverId() + ":offers";
         String payload = JsonMapper.shared().writeValueAsString(event);
 
-        redisTemplate.execute((RedisCallback<Object>) connection -> {
-            byte[] channelBytes = channel.getBytes(UTF_8);
-            byte[] payloadBytes = payload.getBytes(UTF_8);
-
-            return connection.execute("SPUBLISH", channelBytes, payloadBytes);
-        });
+        connection.sync().spublish(channel, payload);
 
         if (!event.expiresAt().isAfter(Instant.now())) {
             return;
