@@ -1,6 +1,7 @@
 package com.goon.notificationservice.controller;
 
 
+import com.goon.notificationservice.dto.RegisterToken;
 import com.goon.notificationservice.service.TokenRegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,10 @@ public class TokenRegisterController {
     @PostMapping("/register_fcm_token")
     public ResponseEntity<Void> registerFcmToken(
             @RequestHeader("X-user-Id")UUID userId,
-            @RequestBody String fcmToken
+            @RequestBody RegisterToken token
             ){
 
-        tokenRegisterService.registerToken(userId,fcmToken);
+        tokenRegisterService.registerToken(userId,token.fcmToken());
 
         return ResponseEntity.noContent()
                 .build();
